@@ -4,12 +4,11 @@ package controllers
 import java.io.File
 import java.util
 import java.util.UUID
-
 import akka.actor.ActorRef
 import akka.pattern.Patterns
 import org.apache.commons.lang3.StringUtils
 import org.sunbird.common.{DateUtils, Platform}
-import org.sunbird.common.dto.{Response, ResponseHandler}
+import org.sunbird.common.dto.{Response, ResponseHandler, ResponseParams}
 import org.sunbird.common.exception.{ClientException, ResponseCode}
 import play.api.mvc._
 import utils.{Constants, JavaJsonUtils}
@@ -98,6 +97,8 @@ abstract class BaseController(protected val cc: ControllerComponents)(implicit e
             val response: String = JavaJsonUtils.serialize(result);
             result.getResponseCode match {
                 case ResponseCode.OK => Ok(response).as("application/json")
+                case ResponseCode.CREATED => Created(response).as("application/json")
+                case ResponseCode.NO_CONTENT => NoContent
                 case ResponseCode.CLIENT_ERROR => BadRequest(response).as("application/json")
                 case ResponseCode.RESOURCE_NOT_FOUND => NotFound(response).as("application/json")
                 case ResponseCode.PARTIAL_SUCCESS => MultiStatus(response).as("application/json")
@@ -108,6 +109,9 @@ abstract class BaseController(protected val cc: ControllerComponents)(implicit e
 
     def setResponseEnvelope(response: Response) = {
         response.setTs(DateUtils.formatCurrentDate("yyyy-MM-dd'T'HH:mm:ss'Z'XXX"))
+        if (response.getParams == null) {
+            response.setParams(new ResponseParams)
+        }
         response.getParams.setResmsgid(UUID.randomUUID().toString)
     }
 

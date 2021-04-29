@@ -4,7 +4,12 @@ object ApiId {
 
 	final val APPLICATION_HEALTH = "api.content.health"
 	final val APPLICATION_SERVICE_HEALTH = "api.content.service.health"
-
+	
+	// Meeting APIs
+	final val CREATE_MEETING = "api.meeting.create"
+	final val GET_MEETING = "api.meeting.read"
+	final val GENERATE_MEETING_SIGNATURE = "api.meeting.signature"
+	
 	//Content APIs
 	val CREATE_CONTENT = "api.content.create"
 	val READ_CONTENT = "api.content.read"

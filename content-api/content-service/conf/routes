@@ -4,6 +4,10 @@
 GET		  /health						    controllers.HealthController.health
 GET       /service/health                   controllers.HealthController.serviceHealth
 
+POST	  /v1/meetings				        controllers.MeetingsController.create
+GET       /v1/meetings/:meetingID           controllers.MeetingsController.get(meetingID:String)
+POST      /v1/meetings/signature            controllers.MeetingsController.generateSignature
+
 # Content APIs
 POST      /content/v3/create                controllers.v3.ContentController.create
 PATCH     /content/v3/update/:identifier    controllers.v3.ContentController.update(identifier:String)

@@ -31,10 +31,6 @@ class MeetingActor @Inject()(implicit oec: OntologyEngineContext, ss: StorageSer
     
     def create(request: Request): Future[Response] = {
         val httpUtil = new HttpUtil()
-        MeetingValidator.validateRequest(request.getRequest, util.Arrays.asList(MeetingConstants.COLUMNS.CREATED_BY,
-            MeetingConstants.COLUMNS.TOPIC,
-            MeetingConstants.COLUMNS.TYPE,
-            MeetingConstants.COLUMNS.SETTINGS))
         val resp = httpUtil.postForObject(MeetingConstants.CREATE_API_ENDPOINT, request.getRequest, MeetingConstants.getApiHeaders)
         if (resp.getResponseCode.equals(ResponseCode.CREATED)) {
             val data: util.Map[String, Object] = new util.HashMap(resp.getResult)

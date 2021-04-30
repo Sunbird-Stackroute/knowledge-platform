@@ -2,11 +2,14 @@ package org.sunbird.common;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DateUtils {
 
+    public final static String ISO_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     public static String format(Date date) {
         SimpleDateFormat sdf = getDateFormat();
@@ -28,6 +31,16 @@ public class DateUtils {
             }
         }
         return null;
+    }
+
+    public static Date parseISOFormattedDate(String date) throws ParseException {
+        return parseFormattedDate(date, ISO_FORMAT);
+    }
+
+    public static Date parseFormattedDate(String date, String format) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        return sdf.parse(date);
     }
 
     public static SimpleDateFormat getDateFormat() {

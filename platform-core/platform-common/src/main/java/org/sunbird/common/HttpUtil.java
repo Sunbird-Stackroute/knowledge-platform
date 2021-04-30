@@ -59,45 +59,43 @@ public class HttpUtil {
 		}
 	}
 
-	public Response postForObject(String url, Map<String, Object> requestMap, Map<String, String> headerParam)
-			throws Exception {
+	public Response postForObject(String url, Map<String, Object> requestMap, Map<String, String> headerParam) {
 		validateRequest(url, headerParam);
 		setDefaultHeader(headerParam);
 		if (MapUtils.isEmpty(requestMap))
 			throw new ServerException("ERR_INVALID_REQUEST_BODY", "Request Body is Missing!");
 		try {
 			HttpResponse<String> response = Unirest.post(url).headers(headerParam).body(JsonUtils.serialize(requestMap)).asString();
-			Map<?, ?> data = getResponse(response, Map.class);
-			Response respModel = new Response();
-			respModel.putAll((Map<String, Object>) data);
-			respModel.setResponseCode(ResponseCode.getResponseCode(response.getStatus()));
-			return respModel;
+			return getResponseForObject(response);
 		} catch (Exception e) {
 			throw new ServerException("ERR_API_CALL", "Something Went Wrong While Making API Call | Error is: " + e.getMessage());
 		}
 	}
 
-	public Response getForObject(String url, String queryParam, Map<String, String> headerParam)
-			throws Exception {
+	public Response getForObject(String url, Map<String, String> headerParam) {
+		return getForObject(url, "", headerParam);
+	}
+
+	public Response getForObject(String url, String queryParam, Map<String, String> headerParam) {
 		validateRequest(url, headerParam);
 		setDefaultHeader(headerParam);
 		String reqUrl = StringUtils.isNotBlank(queryParam) ? url + "?" + queryParam : url;
 		try {
 			HttpResponse<String> response = Unirest.get(reqUrl).headers(headerParam).asString();
-			Map<?, ?> data = getResponse(response, Map.class);
-			Response respModel = new Response();
-			respModel.putAll((Map<String, Object>) data);
-			respModel.setResponseCode(ResponseCode.getResponseCode(response.getStatus()));
-			return respModel;
+			return getResponseForObject(response);
 		} catch (Exception e) {
 			throw new ServerException("ERR_API_CALL", "Something Went Wrong While Making API Call | Error is: " + e.getMessage());
 		}
 	}
 
-	private <T> T getResponse(HttpResponse<String> response, Class<T> tClass) {
+	private Response getResponseForObject(HttpResponse<String> response) {
 		if (null != response && StringUtils.isNotBlank(response.getBody())) {
 			try {
-				return JsonUtils.deserialize(response.getBody(), tClass);
+				Map<?, ?> data = JsonUtils.deserialize(response.getBody(), Map.class);
+				Response respModel = new Response();
+				respModel.putAll((Map<String, Object>) data);
+				respModel.setResponseCode(ResponseCode.getResponseCode(response.getStatus()));
+				return respModel;
 			} catch (Exception e) {
 				throw new ServerException("ERR_DATA_PARSER", "Unable to parse data! | Error is: " + e.getMessage());
 			}

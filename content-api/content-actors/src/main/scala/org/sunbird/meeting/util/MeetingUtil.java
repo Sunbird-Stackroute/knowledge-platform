@@ -23,6 +23,7 @@ public class MeetingUtil {
     static {
         allowedFieldsInResponse = new ArrayList<>() {{
             add(COLUMNS.ID);
+            add(COLUMNS.ENCRYPTED_PASSWORD);
             add(COLUMNS.HOST_ID);
             add(COLUMNS.CREATED_AT);
             add(COLUMNS.AGENDA);

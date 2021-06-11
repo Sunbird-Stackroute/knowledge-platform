@@ -183,7 +183,8 @@ public abstract class CassandraStore {
 			session.execute(boundStatement.bind(objects));
 
 		} catch (Exception e) {
-			throw new ServerException(CassandraParams.ERR_SERVER_ERROR.name(), "Error while upsert record",
+			e.printStackTrace();
+			throw new ServerException(CassandraParams.ERR_SERVER_ERROR.name(), "Error while upsert record:" + e.getMessage(),
 					e);
 		}
 	}
@@ -254,7 +255,7 @@ public abstract class CassandraStore {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param query
 	 * @param objects
 	 * @return
@@ -276,7 +277,7 @@ public abstract class CassandraStore {
 		}
 		return objects;
 	}
-	
+
 	/**
 	 * @return the keySpace
 	 */

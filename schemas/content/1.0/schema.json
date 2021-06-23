@@ -163,6 +163,23 @@
         "variants": {
             "type": "object"
         },
+        "meetingData": {
+            "type": "object",
+            "properties": {
+                "startTime": {
+                    "type": "string"
+                },
+                "duration": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "provider": {
+                    "type": "string"
+                }
+            }
+        },
         "config": {
             "type": "object"
         },
@@ -461,7 +478,8 @@
                 "LearningActivity",
                 "PreviousBoardExamPapers",
                 "LessonPlanResource",
-                "TVLesson"
+                "TVLesson",
+                "Live"
             ]
         },
         "resourceType": {
@@ -480,7 +498,8 @@
                 "Course",
                 "Theory",
                 "Worksheet",
-                "Practical"
+                "Practical",
+                "Live Session"
             ]
         },
         "category": {
@@ -1141,7 +1160,8 @@
                 "Plugin",
                 "Lesson Plan Unit",
                 "Course Unit",
-                "Textbook Unit"
+                "Textbook Unit",
+                "Live Session"
             ]
         },
         "additionalCategories": {
@@ -1199,7 +1219,7 @@
             }
           },
           "sharedWith" : {
-              "type": "array" 
+              "type": "array"
           },
           "isExternal": {
               "type": "boolean"
